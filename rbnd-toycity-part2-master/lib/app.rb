@@ -4,17 +4,22 @@ path = File.join(File.dirname(__FILE__), '../data/products.json')
 file = File.read(path)
 products_hash = JSON.parse(file)
 
-# Print today's date
-p "4 Feb 2015"
+report = open("report.txt", "w")
 
-puts "                     _            _       "
-puts "                    | |          | |      "
-puts " _ __  _ __ ___   __| |_   _  ___| |_ ___ "
-puts "| '_ \\| '__/ _ \\ / _` | | | |/ __| __/ __|"
-puts "| |_) | | | (_) | (_| | |_| | (__| |_\\__ \\"
-puts "| .__/|_|  \\___/ \\__,_|\\__,_|\\___|\\__|___/"
-puts "| |                                       "
-puts "|_|                                       "
+# Print today's date
+date = "5 Feb 2015"
+p date
+report.write(date)
+
+
+ "                     _            _       "
+ "                    | |          | |      "
+ " _ __  _ __ ___   __| |_   _  ___| |_ ___ "
+ "| '_ \\| '__/ _ \\ / _` | | | |/ __| __/ __|"
+ "| |_) | | | (_) | (_| | |_| | (__| |_\\__ \\"
+ "| .__/|_|  \\___/ \\__,_|\\__,_|\\___|\\__|___/"
+ "| |                                       "
+ "|_|                                       "
 
 
 # For each product in the data set:
