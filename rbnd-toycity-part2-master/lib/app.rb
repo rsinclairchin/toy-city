@@ -9,8 +9,7 @@ report = open("report.txt", "w")
 # Print today's date
 date = "5 Feb 2015"
 p date
-report.write(date)
-report.write("/n")
+report.puts(date)
 
 ascii_prods = [
  "                     _            _       ",
@@ -24,8 +23,7 @@ ascii_prods = [
 ]
 
 ascii_prods.each do |line|
-  report.write(line)
-  report.write("/n")
+  report.puts(line)
 end
 
 
@@ -43,10 +41,19 @@ class Product
   def initialize(toy)
     @name = toy["title"]
     @retail_price = toy["full-price"]
+    @purchases = toy["purchases"]
   end
 
   def total_purchases
-    toy["purchases"].length
+    @purchases.length
+  end
+
+  def sales
+    total = 0
+    @purchases.each do |sale|
+      total = total + sale["price"]
+    end
+    return total
   end
 
 end
@@ -54,16 +61,10 @@ end
 products_hash["items"].each do |toy|
 
   toy = Product.new(toy)
-  puts toy.name
-  puts toy.retail_price
-
-  p "TOTAL PURCHASES: #{toy["purchases"].length}"
-
-  total = 0
-  toy["purchases"].each do |sale|
-    total = total + sale["price"]
-  end
-  p "TOTAL AMOUNT OF SALES: $#{total}"
+  report.puts("NAME: #{toy.name}")
+  report.puts("RETAIL PRICE: $#{toy.retail_price}")
+  report.puts("PURCHASES: #{toy.total_purchases}")
+  report.puts("TOTAL AMOUNT OF SALES: $#{toy.sales}")
 
   average_price = total/toy["purchases"].length
   p "AVERAGE PRICE: $#{average_price}"
