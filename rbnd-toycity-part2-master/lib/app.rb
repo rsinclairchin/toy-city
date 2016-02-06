@@ -49,11 +49,11 @@ class Product
   end
 
   def sales
-    total = 0
+    @total = 0
     @purchases.each do |sale|
-      total = total + sale["price"]
+      @total = @total + sale["price"]
     end
-    return total
+    return @total
   end
 
 end
@@ -65,11 +65,9 @@ products_hash["items"].each do |toy|
   report.puts("RETAIL PRICE: $#{toy.retail_price}")
   report.puts("PURCHASES: #{toy.total_purchases}")
   report.puts("TOTAL AMOUNT OF SALES: $#{toy.sales}")
+  report.puts("AVERAGE PRICE: $#{toy.sales/toy.total_purchases}")
+  report.puts("AVERAGE DISCOUNT:")
 
-  average_price = total/toy["purchases"].length
-  p "AVERAGE PRICE: $#{average_price}"
-
-  p "AVERAGE DISCOUNT"
   dollar_discount = (toy["full-price"].to_i - average_price).round(2)
   p "DOLLARS: $#{dollar_discount}"
   p "PERCENTAGE: %#{(dollar_discount/toy["full-price"].to_i*100).round(2)}"
