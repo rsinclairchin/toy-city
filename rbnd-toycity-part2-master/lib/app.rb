@@ -10,6 +10,7 @@ report = open("report.txt", "w")
 date = "5 Feb 2015"
 p date
 report.write(date)
+report.write("/n")
 
 ascii_prods = [
  "                     _            _       ",
@@ -24,6 +25,7 @@ ascii_prods = [
 
 ascii_prods.each do |line|
   report.write(line)
+  report.write("/n")
 end
 
 
@@ -35,31 +37,45 @@ end
   # Calculate and print the average price the toy sold for
   # Calculate and print the average discount (% or $) based off the average sales price
 
-  products_hash["items"].each do |toy|
+class Product
+  attr_accessor :name, :retail_price
 
-    p "NAME OF TOY: #{toy["title"]}"
-
-    p "RETAIL PRICE: $#{toy["full-price"]}"
-
-    p "TOTAL PURCHASES: #{toy["purchases"].length}"
-
-    total = 0
-    toy["purchases"].each do |sale|
-      total = total + sale["price"]
-    end
-    p "TOTAL AMOUNT OF SALES: $#{total}"
-
-    average_price = total/toy["purchases"].length
-    p "AVERAGE PRICE: $#{average_price}"
-
-    p "AVERAGE DISCOUNT"
-    dollar_discount = (toy["full-price"].to_i - average_price).round(2)
-    p "DOLLARS: $#{dollar_discount}"
-    p "PERCENTAGE: %#{(dollar_discount/toy["full-price"].to_i*100).round(2)}"
-
-    p "*"*30
-
+  def initialize(toy)
+    @name = toy["title"]
+    @retail_price = toy["full-price"]
   end
+
+  def total_purchases
+    toy["purchases"].length
+  end
+
+end
+
+products_hash["items"].each do |toy|
+
+  toy = Product.new(toy)
+  puts toy.name
+  puts toy.retail_price
+
+  p "TOTAL PURCHASES: #{toy["purchases"].length}"
+
+  total = 0
+  toy["purchases"].each do |sale|
+    total = total + sale["price"]
+  end
+  p "TOTAL AMOUNT OF SALES: $#{total}"
+
+  average_price = total/toy["purchases"].length
+  p "AVERAGE PRICE: $#{average_price}"
+
+  p "AVERAGE DISCOUNT"
+  dollar_discount = (toy["full-price"].to_i - average_price).round(2)
+  p "DOLLARS: $#{dollar_discount}"
+  p "PERCENTAGE: %#{(dollar_discount/toy["full-price"].to_i*100).round(2)}"
+
+  p "*"*30
+
+end
 
 	puts " _                         _     "
 	puts "| |                       | |    "
