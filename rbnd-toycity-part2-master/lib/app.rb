@@ -36,24 +36,32 @@ end
   # Calculate and print the average discount (% or $) based off the average sales price
 
 class Product
-  attr_accessor :name, :retail_price
+  attr_accessor :name, :retail_price, :total_sales
 
   def initialize(toy)
     @name = toy["title"]
     @retail_price = toy["full-price"]
     @purchases = toy["purchases"]
+    @total_sales = 0
+    @purchases.each do |sale|
+      @total_sales = @total_sales + sale["price"]
+    end
   end
 
   def total_purchases
     @purchases.length
   end
 
-  def sales
-    @total = 0
-    @purchases.each do |sale|
-      @total = @total + sale["price"]
-    end
-    return @total
+  def average_price
+    @total_sales/@purchases.length
+  end
+
+  def discount
+    (@retail_price.to_i - average_price).round(2)
+  end
+
+  def discount_percent
+    (dollar_discount/@retail_price.to_i*100).round(2)
   end
 
 end
@@ -64,25 +72,21 @@ products_hash["items"].each do |toy|
   report.puts("NAME: #{toy.name}")
   report.puts("RETAIL PRICE: $#{toy.retail_price}")
   report.puts("PURCHASES: #{toy.total_purchases}")
-  report.puts("TOTAL AMOUNT OF SALES: $#{toy.sales}")
-  report.puts("AVERAGE PRICE: $#{toy.sales/toy.total_purchases}")
+  report.puts("TOTAL AMOUNT OF SALES: $#{toy.total_sales}")
+  report.puts("AVERAGE PRICE: $#{toy.total_sales/toy.total_purchases}")
   report.puts("AVERAGE DISCOUNT:")
-
-  dollar_discount = (toy["full-price"].to_i - average_price).round(2)
-  p "DOLLARS: $#{dollar_discount}"
-  p "PERCENTAGE: %#{(dollar_discount/toy["full-price"].to_i*100).round(2)}"
-
-  p "*"*30
+  report.puts("DOLLARS: $#{toy.discount}")
+  report.puts("PERCENTAGE: %#{(toy.discount/toy.retail_price.to_i*100).round(2)}")
+  report.puts("*"*30)
 
 end
 
-	puts " _                         _     "
-	puts "| |                       | |    "
-	puts "| |__  _ __ __ _ _ __   __| |___ "
-	puts "| '_ \\| '__/ _` | '_ \\ / _` / __|"
-	puts "| |_) | | | (_| | | | | (_| \\__ \\"
-	puts "|_.__/|_|  \\__,_|_| |_|\\__,_|___/"
-	puts
+	report.puts(" _                         _     ")
+	report.puts("| |                       | |    ")
+	report.puts("| |__  _ __ __ _ _ __   __| |___ ")
+	report.puts("| '_ \\| '__/ _` | '_ \\ / _` / __|")
+	report.puts("| |_) | | | (_| | | | | (_| \\__ \\")
+	report.puts("|_.__/|_|  \\__,_|_| |_|\\__,_|___/")
 
 # For each brand in the data set:
   # Print the name of the brand
