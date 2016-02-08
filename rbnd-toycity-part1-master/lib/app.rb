@@ -1,11 +1,12 @@
 require 'pp'
 require 'json'
+require 'date'
 path = File.join(File.dirname(__FILE__), '../data/products.json')
 file = File.read(path)
 products_hash = JSON.parse(file)
 
 # Print today's date
-p "4 Feb 2015"
+puts DateTime.now.strftime('%m/%d/%Y')
 
 puts "                     _            _       "
 puts "                    | |          | |      "
@@ -27,27 +28,27 @@ puts "|_|                                       "
 
   products_hash["items"].each do |toy|
 
-    p "NAME OF TOY: #{toy["title"]}"
+    puts "NAME OF TOY: #{toy["title"]}"
 
-    p "RETAIL PRICE: $#{toy["full-price"]}"
+    puts "RETAIL PRICE: $#{toy["full-price"]}"
 
-    p "TOTAL PURCHASES: #{toy["purchases"].length}"
+    puts "TOTAL PURCHASES: #{toy["purchases"].length}"
 
     total = 0
     toy["purchases"].each do |sale|
       total = total + sale["price"]
     end
-    p "TOTAL AMOUNT OF SALES: $#{total}"
+    puts "TOTAL AMOUNT OF SALES: $#{total}"
 
     average_price = total/toy["purchases"].length
-    p "AVERAGE PRICE: $#{average_price}"
+    puts "AVERAGE PRICE: $#{average_price}"
 
-    p "AVERAGE DISCOUNT"
-    dollar_discount = (toy["full-price"].to_i - average_price).round(2)
-    p "DOLLARS: $#{dollar_discount}"
-    p "PERCENTAGE: %#{(dollar_discount/toy["full-price"].to_i*100).round(2)}"
+    puts "AVERAGE DISCOUNT"
+    dollar_discount = (toy["full-price"].to_f - average_price).round(2)
+    puts "DOLLARS: $#{dollar_discount}"
+    puts "PERCENTAGE: %#{(dollar_discount/toy["full-price"].to_f*100).round(2)}"
 
-    p "*"*30
+    puts "*"*30
 
   end
 
@@ -73,17 +74,17 @@ end
 
 branded.keys.each do |brand|
 
-  p "BRAND: #{brand}"
+  puts "BRAND: #{brand}"
 
   toys_stocked = branded[brand].length
-  p "TOYS STOCKED: #{toys_stocked}"
+  puts "TOYS STOCKED: #{toys_stocked}"
 
   total_price = 0
   branded[brand].each do |toy|
-    total_price = total_price + toy["full-price"].to_i
+    total_price = total_price + toy["full-price"].to_f
   end
-  average_price = total_price/toys_stocked
-  p "AVERAGE PRICE: #{average_price}"
+  average_price = (total_price/toys_stocked).round(2)
+  puts "AVERAGE PRICE: #{average_price}"
 
   total_sales = 0
   branded[brand].each do |toy|
@@ -91,8 +92,8 @@ branded.keys.each do |brand|
       total_sales = total_sales + purchase["price"]
     end
   end
-  p "TOTAL REVENUE: #{(total_sales - total_price).round(2)}"
+  puts "TOTAL REVENUE: #{(total_sales).round(2)}"
 
-  p "*"*30
+  puts "*"*30
 
 end
