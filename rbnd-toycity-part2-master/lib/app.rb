@@ -94,25 +94,59 @@ end
   # Calculate and print the average price of the brand's toys
   # Calculate and print the total revenue of all the brand's toy sales combined
 
-branded = Hash.new
+class Brand
 
-products_hash["items"].each do |toy|
-    !branded[toy["brand"]] ? branded[toy['brand']] = [toy] : branded[toy["brand"]] << toy
+  def initialize(products_hash)
+    @products_hash = products_hash
+    @branded = Hash.new
+    organize_by_brand
+  end
+
+  def organize_by_brand
+    @products_hash["items"].each do |toy|
+        !@branded[toy["brand"]] ? @branded[toy["brand"]] = [toy] : @branded[toy["brand"]] << toy
+    end
+  end
+
+  def print_report
+    @branded.keys.each do |key, value|
+      puts "BRAND: #{key}"
+      puts "TOYS STOCKED: #{@branded[key].count}"
+      puts "AVERAGE PRICE: $#{average_price(key)}"
+    end
+  end
+
+  def average_price(brand)
+    total_price = 0
+    @branded[brand].each do |toy|
+      total_price = total_price + toy["full-price"].to_i
+    end
+    average_price = total_price/@branded[brand].count
+    return average_price
+  end
+
+  def total_revenue(brand)
+
+  end
+
 end
 
-branded.keys.each do |brand|
 
-  p "BRAND: #{brand}"
 
-  toys_stocked = branded[brand].length
-  p "TOYS STOCKED: #{toys_stocked}"
+branded = Brand.new(products_hash)
+
+# branded.keys.each do |brand|
+  pp branded
+
+  report.puts branded.print_report
+
+
 
   total_price = 0
   branded[brand].each do |toy|
     total_price = total_price + toy["full-price"].to_i
   end
   average_price = total_price/toys_stocked
-  p "AVERAGE PRICE: #{average_price}"
 
   total_sales = 0
   branded[brand].each do |toy|
@@ -124,4 +158,4 @@ branded.keys.each do |brand|
 
   p "*"*30
 
-end
+# end
