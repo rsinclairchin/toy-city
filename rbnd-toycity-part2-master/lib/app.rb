@@ -1,5 +1,6 @@
 require 'pp'
 require 'json'
+require 'date'
 path = File.join(File.dirname(__FILE__), '../data/products.json')
 file = File.read(path)
 products_hash = JSON.parse(file)
@@ -7,9 +8,7 @@ products_hash = JSON.parse(file)
 report = open("report.txt", "w")
 
 # Print today's date
-date = "5 Feb 2015"
-p date
-report.puts(date)
+report.puts(DateTime.now.strftime('%m/%d/%Y'))
 
 ascii_prods = [
  "                     _            _       ",
@@ -22,10 +21,13 @@ ascii_prods = [
  "|_|                                       "
 ]
 
-ascii_prods.each do |line|
-  report.puts(line)
+def print_ascii(ascii)
+  ascii.each do |line|
+    report.puts(line)
+  end
 end
 
+print_ascii(ascii_prods)
 
 # For each product in the data set:
   # Print the name of the toy
@@ -34,9 +36,6 @@ end
   # Calculate and print the total amount of sales
   # Calculate and print the average price the toy sold for
   # Calculate and print the average discount (% or $) based off the average sales price
-
-class Product
-  attr_accessor :name, :retail_price, :total_sales
 
   def initialize(toy)
     @name = toy["title"]
@@ -64,8 +63,6 @@ class Product
     (dollar_discount/@retail_price.to_i*100).round(2)
   end
 
-end
-
 products_hash["items"].each do |toy|
 
   toy = Product.new(toy)
@@ -81,12 +78,15 @@ products_hash["items"].each do |toy|
 
 end
 
-	report.puts(" _                         _     ")
-	report.puts("| |                       | |    ")
-	report.puts("| |__  _ __ __ _ _ __   __| |___ ")
-	report.puts("| '_ \\| '__/ _` | '_ \\ / _` / __|")
-	report.puts("| |_) | | | (_| | | | | (_| \\__ \\")
-	report.puts("|_.__/|_|  \\__,_|_| |_|\\__,_|___/")
+ascii_brands =
+	[" _                         _     ",
+	 "| |                       | |    ",
+	 "| |__  _ __ __ _ _ __   __| |___ ",
+	 "| '_ \\| '__/ _` | '_ \\ / _` / __|",
+	 "| |_) | | | (_| | | | | (_| \\__ \\",
+	 "|_.__/|_|  \\__,_|_| |_|\\__,_|___/"]
+
+print_ascii(ascii_brands)
 
 # For each brand in the data set:
   # Print the name of the brand
