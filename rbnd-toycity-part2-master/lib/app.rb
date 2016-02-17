@@ -5,10 +5,10 @@ path = File.join(File.dirname(__FILE__), '../data/products.json')
 file = File.read(path)
 products_hash = JSON.parse(file)
 
-report = open("report.txt", "w")
+$report = open("report.txt", "w")
 
 # Print today's date
-report.puts(DateTime.now.strftime('%m/%d/%Y'))
+$report.puts(DateTime.now.strftime('%m/%d/%Y'))
 
 ascii_prods = [
  "                     _            _       ",
@@ -23,7 +23,7 @@ ascii_prods = [
 
 def print_ascii(ascii)
   ascii.each do |line|
-    report.puts(line)
+    $report.puts(line)
   end
 end
 
@@ -37,46 +37,61 @@ print_ascii(ascii_prods)
   # Calculate and print the average price the toy sold for
   # Calculate and print the average discount (% or $) based off the average sales price
 
-  def initialize(toy)
-    @name = toy["title"]
-    @retail_price = toy["full-price"]
-    @purchases = toy["purchases"]
-    @total_sales = 0
-    @purchases.each do |sale|
-      @total_sales = @total_sales + sale["price"]
+  def name(toy)
+    toy["title"]
+  end
+
+  def retail_price(toy)
+    toy["full-price"].to_f
+  end
+
+  def purchases(toy)
+    toy["purchases"]
+  end
+
+  def total_purchases(toy)
+    toy["purchases"].length
+  end
+
+  def total_sales(toy)
+    total = 0
+    toy["purchases"].each do |sale|
+      total = total + sale["price"]
     end
+    return total
   end
 
-  def total_purchases
-    @purchases.length
+  def average_price(toy)
+    total_sales(toy)/total_purchases(toy)
   end
 
-  def average_price
-    @total_sales/@purchases.length
+  def discount(toy)
+    (retail_price(toy) - average_price(toy)).round(2)
   end
 
-  def discount
-    (@retail_price.to_i - average_price).round(2)
+  def discount_percent(toy)
+    (discount(toy)/retail_price(toy)*100).round(2)
   end
 
-  def discount_percent
-    (dollar_discount/@retail_price.to_i*100).round(2)
+  def products_report(products_hash)
+
+    products_hash["items"].each do |toy|
+
+      $report.puts("NAME: #{name(toy)}")
+      $report.puts("RETAIL PRICE: $#{retail_price(toy)}")
+      $report.puts("PURCHASES: #{total_purchases(toy)}")
+      $report.puts("TOTAL AMOUNT OF SALES: $#{total_sales(toy)}")
+      $report.puts("AVERAGE PRICE: $#{average_price(toy)}")
+      $report.puts("AVERAGE DISCOUNT:")
+      $report.puts("DOLLARS: $#{discount(toy)}")
+      $report.puts("PERCENTAGE: %#{(discount_percent(toy)).round(2)}")
+      $report.puts("*"*30)
+
+    end
+
   end
 
-products_hash["items"].each do |toy|
-
-  toy = Product.new(toy)
-  report.puts("NAME: #{toy.name}")
-  report.puts("RETAIL PRICE: $#{toy.retail_price}")
-  report.puts("PURCHASES: #{toy.total_purchases}")
-  report.puts("TOTAL AMOUNT OF SALES: $#{toy.total_sales}")
-  report.puts("AVERAGE PRICE: $#{toy.total_sales/toy.total_purchases}")
-  report.puts("AVERAGE DISCOUNT:")
-  report.puts("DOLLARS: $#{toy.discount}")
-  report.puts("PERCENTAGE: %#{(toy.discount/toy.retail_price.to_i*100).round(2)}")
-  report.puts("*"*30)
-
-end
+products_report(products_hash)
 
 ascii_brands =
 	[" _                         _     ",
