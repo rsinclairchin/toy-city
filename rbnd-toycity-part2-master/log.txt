@@ -1,1 +1,13 @@
 "create log.txt and report.txt, write date into report.txt"
+
+"write products ascii art to report.txt"
+
+"make toy name and retail_price attr_accessors, add method to calculate total purchases"
+
+"add method to calculate total amount of sales"
+
+"write average price to file"
+
+"write average discount in dollars and percentage to file"
+
+"create Brand class, add organize_by_brand method and begin writing methods to print full report"
