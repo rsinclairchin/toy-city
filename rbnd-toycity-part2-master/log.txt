@@ -1,3 +1,6 @@
 "create log.txt and report.txt, write date into report.txt"
 
 "make print_ascii method"
+
+"make methods for products report"
+
