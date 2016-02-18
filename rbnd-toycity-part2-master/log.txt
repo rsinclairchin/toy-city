@@ -4,3 +4,4 @@
 
 "make methods for products report"
 
+"make methods for brands report"
